@@ -1,0 +1,13 @@
+{
+  "name": "moura-connect-simulador",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simulador de telemetria de bancos de baterias estacionarias",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "mqtt": "^5.5.0"
+  }
+}
