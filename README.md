@@ -1,3 +1,15 @@
+# Notes
+
+## Considerações
+
+1. Todas as variáveis na mensagem dos bancos são necessária (informações faltantes resultam no descarte da mensagem inteira)
+
+## ingestao
+
+validação utilizando Zod
+Considerando kafka um singleton, um único producer
+Ainda não foi considerado partições no kafka
+
 # Repositório base — Moura Connect
 
 Ambiente pronto para você começar o case sem gastar tempo com infraestrutura. Aqui está tudo que você precisa: os brokers, os bancos de dados, o simulador de telemetria e uma carga inicial de dados.
