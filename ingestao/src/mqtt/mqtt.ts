@@ -1,25 +1,40 @@
 import mqtt from "mqtt";
-import { env } from "../config/env.js";
-import { sendMessage } from "../kafka/kafka-client.js";
-import { BatteryBankSchema, type TBatteryBank } from "../protocols/battery-bank.types.js";
-import { validateSchema } from "../protocols/validate-protocol.js";
+import type z from "zod";
+import { fromZodError } from "zod-validation-error";
 
-export function startMqttClient() {
+const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
 
-	const client = mqtt.connect(env.MQTT_BROKER);
+export function startMqttClient(broker: string, topic: string) {
+
+	const client = mqtt.connect(broker);
 
 	client.on("connect", () => {
-		client.subscribe(`${env.BATTERY_BANK_TOPIC}/#`, (err) => {
+		client.subscribe(`${topic}/#`, (err) => {
 			if (!err) {
-			console.log(`MQTT Successfully connected to ${env.BATTERY_BANK_TOPIC}`);
+			console.log(`MQTT Successfully connected to ${topic}`);
 			}
 		});
 	});
 
-	client.on("message", (topic, message) => {
-		const data = validateSchema(BatteryBankSchema, JSON.parse(message.toString()))
-		if (data) {
-			sendMessage<TBatteryBank>(env.KAFKA_TOPIC, data)
+	signalTraps.forEach(type => {
+		process.on(type, async () => {
+			await client.end()
+		})
+	})
+
+	return client;
+}
+
+export function setValidateAndRedirect<T>(
+	client: mqtt.MqttClient, 
+	schema: z.ZodSchema<T>, 
+	callback: (message: T) => void) {
+	client.on("message", (_topic, message) => {
+		const parsedData = schema.safeParse(JSON.parse(message.toString()))
+		if (parsedData.success) {
+			callback(parsedData.data)
+		} else {
+			console.log(fromZodError(parsedData.error))
 		}
 	});
 }
