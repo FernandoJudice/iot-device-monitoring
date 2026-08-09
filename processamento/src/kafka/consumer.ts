@@ -24,9 +24,9 @@ export async function createConsumer(topic: string) {
 
 	} catch (error) {
 		if (error instanceof Error) {
-			throw new Error(`Error connecting to Kafka producer: ${error.message}`);
+			throw new Error(`Error connecting to Kafka consumer at ${topic}: ${error.message}`);
 		}
-		throw new Error('Unknown error occurred while connecting to Kafka producer');
+		throw new Error('Unknown error occurred while connecting to Kafka consumer');
 	}
 }
 

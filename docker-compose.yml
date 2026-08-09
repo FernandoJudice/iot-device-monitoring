@@ -103,6 +103,23 @@ services:
       BATTERY_BANK_TOPIC: "moura/telemetria"
       KAFKA_BROKER: "kafka:29092"
       INGESTION_TOPIC: "telemetria.leituras"
+  
+  processamento:
+    build: ./processamento
+    container_name: processamento
+    depends_on:
+      kafka:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER: "kafka:29092"
+      KAFKA_INGESTION_TOPIC: "telemetria.leituras"
+      KAFKA_ALARM_TOPIC: "alertas.eventos"
+      MONGODB_URI: "mongodb://mongo:27017/moura"
+      REDIS_URL: "redis://redis:6379"
     
 
 volumes:
