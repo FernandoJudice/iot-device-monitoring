@@ -5,6 +5,7 @@
 1. Todas as variáveis na mensagem dos bancos são necessária (informações faltantes resultam no descarte da mensagem inteira)
 2. Para manter consistência, os indentificadores serão mantidos em português 
 3. Um banco pode ter múltiplos alarmes simultâneos
+4. Logger
 
 ## ingestao
 
@@ -16,6 +17,15 @@ Ainda não foi considerado partições no kafka
 
 Limitação do kafkajs não implementa kafka stream
 Optado por salvar meta dados do estado no banco, ao invés de iterar pelo tópico inteiro do kafka
+1. Kafta streams: não disponível na lib
+2. Estado no servidos. Não escala pois a mensagem pode ser processada por instancias diferentes
+3. Salvas no redis metadados. Melhor custo benéficio
+4. Utilizar um tópico adicional no kafka para segurar as mensagens relativas ao alarme. 
+sistema de alerta modular. contraponto: função não pura
+
+## API
+
+Não será utilizado um ORM por simplicidade
 
 # Repositório base — Moura Connect
 

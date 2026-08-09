@@ -1,0 +1,9 @@
+POST http://localhost:3000/api/v1/auth/sign-in
+Origin: http://localhost:5173
+Content-Type: application/json
+
+{
+	"email": "ana.souza@exemplo.com",
+	"password": "senha123",
+	"confirmPassword": "senha123"
+}
