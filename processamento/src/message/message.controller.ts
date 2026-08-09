@@ -8,22 +8,23 @@ import { getMessageFromRedis, saveMessageToDatabase, saveMessageToRedis } from "
 
 export async function processMessage(message: BatteryBankState, producer: Producer) {
 	
-	const databasePromise = saveMessageToDatabase("leituras", message)
-
+	
 	const lastState = await getMessageFromRedis<BatteryBankState>(message.bancoId)
-
+	
 	message.timestamp = new Date(message.timestamp)
-
+	
 	if (lastState) lastState.timestamp = new Date(lastState.timestamp)
-	const alertEvents = applyAlarms(message, OnMsgAlarms, lastState)
-
+		const alertEvents = applyAlarms(message, OnMsgAlarms, lastState)
+	
 	const redisPromise = saveMessageToRedis(message.bancoId, message)
-
+	
 	console.log(`Processed message:`, message)
 	
 	let producerPromise
 	let alertDatabasePromise
-
+	
+	const databasePromise = saveMessageToDatabase("leituras", message)
+	
 	if (alertEvents.length > 0) {
 		console.log(`New Alarm Events:`, alertEvents)
 		producerPromise = sendMessageArray(producer, env.KAFKA_ALARM_TOPIC, alertEvents)
