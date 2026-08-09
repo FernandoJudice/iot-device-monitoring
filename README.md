@@ -27,6 +27,7 @@ Salvar os alertas em um coleção de alertas
 ## API
 
 Não será utilizado um ORM por simplicidade
+Considerar que contratos não é uma informação sensível e pode estar presente na token
 
 # Repositório base — Moura Connect
 

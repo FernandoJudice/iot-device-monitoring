@@ -4,14 +4,15 @@ import z from "zod";
 export type User = {
 	email: string,
 	nome: string,
-	perfil: string,
+	perfil: 'operador' | 'client',
 	contratos: string[],
 	senhaHash: string
 }
 
 export type JwtData = {
 	sub: string,
-	role: string
+	role: 'operador' | 'client',
+	contracts: string[]
 }
 
 

@@ -13,13 +13,13 @@ export async function onSignIn(
 		const accessToken =
 			await authService.issueNewAccessToken({
 				sub: user.email,
-				role: user.perfil
+				role: user.perfil,
+				contracts: user.contratos
 			});
 
 		console.log(user, `User Sign In`);
 
 		res.status(200).json({
-			user: user,
 			token: 'Bearer ' + accessToken,
 		});
 	} catch (error: unknown) {
