@@ -9,20 +9,20 @@ import { getMessageFromRedis, saveMessageToDatabase, saveMessageToRedis } from "
 export async function processMessage(message: BatteryBankState, producer: Producer) {
 	
 	
-	const lastState = await getMessageFromRedis<BatteryBankState>(message.bancoId)
+	const lastState = await getMessageFromRedis<BatteryBankState>(`leitura:${message.bancoId}`)
 	
 	message.timestamp = new Date(message.timestamp)
 	
 	if (lastState) lastState.timestamp = new Date(lastState.timestamp)
 		const alertEvents = applyAlarms(message, OnMsgAlarms, lastState)
 	
-	const redisPromise = saveMessageToRedis(message.bancoId, message)
+	const redisPromise = saveMessageToRedis(`leitura:${message.bancoId}`, message)
 	
 	console.log(`Processed message:`, message)
 	
 	let producerPromise
 	let alertDatabasePromise
-	
+
 	const databasePromise = saveMessageToDatabase("leituras", message)
 	
 	if (alertEvents.length > 0) {

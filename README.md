@@ -22,6 +22,7 @@ Optado por salvar meta dados do estado no banco, ao invés de iterar pelo tópic
 3. Salvas no redis metadados. Melhor custo benéficio
 4. Utilizar um tópico adicional no kafka para segurar as mensagens relativas ao alarme. 
 sistema de alerta modular. contraponto: função não pura
+Salvar os alertas em um coleção de alertas
 
 ## API
 
