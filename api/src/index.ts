@@ -6,9 +6,18 @@ import { auth as authRouter } from './auth/auth.routes.js';
 import { errorHandler } from './middleware/error-handler.js';
 import { connectToDatabase } from './config/db.js';
 import { redisClient } from "./config/redis.js";
+import { createConsumer, listenMessage } from './kafka/consumer.js';
+import { processAlarm } from './alarms/alarms.controller.js';
 
 await connectToDatabase();
 await redisClient.connect();
+
+const consumer = await createConsumer(env.KAFKA_ALARM_TOPIC);
+
+await listenMessage(
+	consumer, 
+	processAlarm
+);
 
 const app = express();
 app.use(cookieParser());
