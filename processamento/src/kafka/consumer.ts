@@ -33,7 +33,7 @@ export async function createConsumer(topic: string) {
 export async function listenMessage<T>(consumer: Consumer, callback: (message: T) => Promise<void>) {
 	await consumer.run({
 			eachMessage: async ({ message }) => {
-				console.log(`Received message: ${message.value?.toString()}`);
+				// console.log(`Received message: ${message.value?.toString()}`);
 				const data = JSON.parse(message.value?.toString() || '{}') as T;
 				if (!data) {
 					console.error('Received empty message');

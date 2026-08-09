@@ -2,7 +2,7 @@ import type { AlarmRule, SeverityLevel } from "./alarms.types.js";
 
 interface LowVoltageState {
 	tensaoV: number;
-	ruleState: {
+	ruleState?: {
 		leiturasConsec?: number;
 	}
 }
@@ -17,20 +17,27 @@ export function createLowVoltageAlarmRule (
   return {
 	name,
 	severity,
-	evaluate: (curState: LowVoltageState, lastState: LowVoltageState) => {
+	evaluate: (curState: LowVoltageState, lastState: LowVoltageState | null) => {
 		let result = false;
-		if (curState.tensaoV > thresholdV) {
-			curState.ruleState.leiturasConsec = 0;
-			result = false;
-		} else if (!lastState.ruleState.leiturasConsec) {
-			console.log(`Invalid State: lastState.ruleState.leiturasConsec is undefined. Restarting counter.`);
-			curState.ruleState.leiturasConsec = 1;
-			result = false;
-		}
-		else {
-			curState.ruleState.leiturasConsec = lastState.ruleState.leiturasConsec + 1;
-			if (curState.ruleState.leiturasConsec >= lowReadingCount) {
-				result = true;
+		if (curState.tensaoV < thresholdV) {
+			if (!lastState?.ruleState?.leiturasConsec) {
+				curState.ruleState = {
+					...curState.ruleState,
+					leiturasConsec: 1
+				};
+				result = false;
+			}
+
+			else {
+				const curCounting = lastState.ruleState.leiturasConsec + 1
+
+				curState.ruleState = {
+					...curState.ruleState,
+					leiturasConsec: curCounting
+				};
+				if (curCounting >= lowReadingCount) {
+					result = true;
+				}
 			}
 		}
 		return result;

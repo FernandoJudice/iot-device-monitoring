@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "kafkajs": "^2.2.4",
+    "mongodb": "^7.5.0",
     "redis": "^6.2.0"
   }
 }

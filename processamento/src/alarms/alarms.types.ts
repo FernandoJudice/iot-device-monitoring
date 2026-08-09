@@ -1,6 +1,7 @@
 export type SeverityLevel = 'low' | 'medium' | 'high' | 'critical';
 
 export type AlarmEvent = {
+	bancoId: string,
 	name: string;
 	timestamp: number;
 	severity: SeverityLevel;
@@ -10,5 +11,5 @@ export type AlarmEvent = {
 export type AlarmRule<T> = {
 	name: string;
 	severity: SeverityLevel;
-	evaluate: (curState: T, lastState: T) => boolean;
+	evaluate: (curState: T, lastState: T | null) => boolean;
 }

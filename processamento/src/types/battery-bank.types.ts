@@ -9,8 +9,10 @@ type BatteryBankMessage = {
 	estadoCarga: number
 	modo: `flutuacao` | `descarga` | `recarga`
 }
+
 type BatteryBankAlarms = {
 	alertas?: string[]
-	ruleState: Record<string, unknown>
+	ruleState?: Record<string, unknown>
 }
+
 export type BatteryBankState = BatteryBankMessage & BatteryBankAlarms

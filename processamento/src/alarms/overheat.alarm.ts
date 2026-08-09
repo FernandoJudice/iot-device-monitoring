@@ -12,7 +12,7 @@ export function createOverheatAlarmRule (
   return {
 	name,
 	severity,
-	evaluate: (curState: OverheatState, _lastState: OverheatState) => {
+	evaluate: (curState: OverheatState, _lastState: OverheatState | null) => {
 		return curState.temperaturaC > thresholdC;
 	}
   };
