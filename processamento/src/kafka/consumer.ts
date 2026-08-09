@@ -1,4 +1,4 @@
-import type { Consumer } from "kafkajs";
+import type { Consumer, Producer } from "kafkajs";
 import { kafkaClient } from "./client.js";
 
 const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
@@ -30,16 +30,15 @@ export async function createConsumer(topic: string) {
 	}
 }
 
-export async function listenMessage<T>(consumer: Consumer, callback: (message: T) => Promise<void>) {
+export async function listenMessage<T>(consumer: Consumer, producer: Producer, callback: (message: T, producer: any) => Promise<void>) {
 	await consumer.run({
 			eachMessage: async ({ message }) => {
-				// console.log(`Received message: ${message.value?.toString()}`);
 				const data = JSON.parse(message.value?.toString() || '{}') as T;
 				if (!data) {
 					console.error('Received empty message');
 					return;
 				}
-				await callback(data);
+				await callback(data, producer);
 			},
 		}).catch(e => console.error(`Failed to listen to messages on consumer's topic: ${e.message}`, e))
 }

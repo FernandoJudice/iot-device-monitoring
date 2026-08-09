@@ -1,11 +1,26 @@
+import type { Producer } from "kafkajs";
 import { kafkaClient } from "./client.js";
 
-const producer = kafkaClient.producer();
+const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
 
-export async function startProducer() {
+export async function createProducer() {
+	const producer = kafkaClient.producer();
 	try {
 		await producer.connect();
 		console.log('Kafka producer connected');
+
+		signalTraps.forEach(type => {
+			process.on(type, async () => {
+				try {
+					await producer.disconnect()
+				} finally {
+					process.kill(process.pid, type)
+				}
+			})
+		})
+
+		return producer;
+
 	} catch (error) {
 		if (error instanceof Error) {
 			throw new Error(`Error connecting to Kafka producer: ${error.message}`);
@@ -14,12 +29,16 @@ export async function startProducer() {
 	}
 }
 
-export async function sendMessage<T>(topic: string, message: T) {
+export async function sendMessageArray<T>(producer: Producer, topic: string, messages: T[] ) {
+	const payload = messages.map((message) => ({
+		value: JSON.stringify(message) 
+	}))
 	try {
 		await producer.send({
 			topic,
-			messages: [{ value: JSON.stringify(message) }],
+			messages: payload,
 		});
+		console.log(`${payload.length} Message sent to Kafka topic ${topic}:`);
 	} catch (error) {
 		if (error instanceof Error) {
 			console.log(`Error sending message to Kafka: ${error.message}`);
