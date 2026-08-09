@@ -18,6 +18,7 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
-    "kafkajs": "^2.2.4"
+    "kafkajs": "^2.2.4",
+    "redis": "^6.2.0"
   }
 }

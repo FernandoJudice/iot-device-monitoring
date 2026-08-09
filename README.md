@@ -3,6 +3,8 @@
 ## Considerações
 
 1. Todas as variáveis na mensagem dos bancos são necessária (informações faltantes resultam no descarte da mensagem inteira)
+2. Para manter consistência, os indentificadores serão mantidos em português 
+3. Um banco pode ter múltiplos alarmes simultâneos
 
 ## ingestao
 
@@ -11,6 +13,9 @@ Considerando kafka um singleton, um único producer
 Ainda não foi considerado partições no kafka
 
 ## processamento
+
+Limitação do kafkajs não implementa kafka stream
+Optado por salvar meta dados do estado no banco, ao invés de iterar pelo tópico inteiro do kafka
 
 # Repositório base — Moura Connect
 

@@ -1,9 +1,12 @@
-import { startConsumer, listenMessage } from "./kafka/consumer.js";
+import { env } from "./config/env.js";
+import { createConsumer, listenMessage } from "./kafka/consumer.js";
 
-startConsumer()
-.then(() => {
-  console.log('Kafka consumer started');
-  listenMessage();
+
+const consumer = await createConsumer(env.KAFKA_INGESTION_TOPIC);
+
+await listenMessage(consumer, async (message) => {
+  console.log(`Received message: ${JSON.stringify(message)}`);
+  // Process the message here
 }).catch((error) => {
   console.error('Error starting Kafka consumer:', error);
 });
