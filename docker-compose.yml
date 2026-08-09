@@ -89,6 +89,21 @@ services:
       INTERVALO_MS: "5000"
       SEMENTE: "42"
     restart: unless-stopped
+  
+  ingestao:
+    build: ./ingestao
+    container_name: ingestao
+    depends_on:
+      kafka:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+    environment:
+      MQTT_BROKER: mqtt://mosquitto:1883
+      BATTERY_BANK_TOPIC: "moura/telemetria"
+      KAFKA_BROKER: "kafka:29092"
+      INGESTION_TOPIC: "telemetria.leituras"
+    
 
 volumes:
   mongo-data:
