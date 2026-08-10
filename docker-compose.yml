@@ -145,12 +145,22 @@ services:
     environment:
       KAFKA_BROKER: "kafka:29092"
       KAFKA_ALARM_TOPIC: "alertas.eventos"
+      KAFKA_INGESTION_TOPIC: "telemetria.leituras"
       MONGODB_URI: "mongodb://mongo:27017/moura"
       REDIS_URL: "redis://redis:6379"
       PORT: "3000"
       ACCESS_TOKEN_SECRET: 3a53c400696359c743f2437f97fd876867d255400a8d541bfad0ed4e9e39b3b3cf24148988425ffd79c1fd8843a73245f2613b2d9bebbc0cfa729729df884c5b
       ACCESS_TOKEN_DURATION_VALUE: '15'
       ACCESS_TOKEN_DURATION_UNIT: 'm'
+  
+  web:
+    build: ./web
+    container_name: web
+    ports:
+      - "3001:3000"
+    environment:
+      API_URL: 'http://api:3000'
+      NEXT_PUBLIC_API_URL: 'http://api:3000'
 
 volumes:
   mongo-data:
