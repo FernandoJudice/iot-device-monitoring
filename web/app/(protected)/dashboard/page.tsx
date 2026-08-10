@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, Loader2 } from "lucide-react";
 
+import { UnauthorizedError } from '@/api/auth/auth.types';
 import { getSites } from "@/api/sites/sites";
 import type { SiteWithActiveAlarms } from "@/api/sites/sites.types";
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,6 +25,10 @@ export default function DashboardPage() {
 				const { result } = await getSites();
 				if (!cancelled) setSites(result);
 			} catch (error: unknown) {
+				if (error instanceof UnauthorizedError) {
+					router.replace('/sign-in');
+					return;
+				}
 				if (!cancelled) setErrorMsg(error instanceof Error ? error.message : "Failed to load sites");
 			} finally {
 				if (!cancelled) setIsLoading(false);
@@ -35,7 +40,7 @@ export default function DashboardPage() {
 		return () => {
 			cancelled = true;
 		};
-	}, []);
+	}, [router]);
 
 	return (
 		<div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6">

@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
 import { apiFetch } from "../api-client";
+import { UnauthorizedError } from '../auth/auth.types';
 import type { GetSitesResponse } from "./sites.types";
 
 
@@ -11,7 +11,7 @@ export async function getSites(): Promise<GetSitesResponse> {
 
 		if (!response.ok) {
 				if (response.status == 401) {
-					redirect('/sign-in')
+					throw new UnauthorizedError();
 				}
 				const error = await response.json().catch(() => null);
 				throw new Error( error?.message ?? 'Failed to fetch sites' );

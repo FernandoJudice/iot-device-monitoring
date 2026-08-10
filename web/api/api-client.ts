@@ -1,4 +1,4 @@
-import { getAccessToken } from './auth/tokenStore';
+import { clearToken, getAccessToken } from './auth/tokenStore';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -17,5 +17,22 @@ export async function apiFetch(
     },
   });
 
+  if (response.status === 401) {
+    clearToken();
+  }
+
   return response;
+}
+
+export function getWebSocketUrl(path: string) {
+  const token = getAccessToken();
+  const url = new URL(`${API_URL}${path}`);
+
+  url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+
+  if (token) {
+    url.searchParams.set('token', token);
+  }
+
+  return url.toString();
 }

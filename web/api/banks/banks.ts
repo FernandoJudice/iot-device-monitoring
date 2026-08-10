@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
 import { apiFetch } from "../api-client";
+import { UnauthorizedError } from '../auth/auth.types';
 import type { GetBankReadingsResponse, GetSiteBanksResponse } from "./banks.types";
 
 export async function getSiteBanks(siteId: string): Promise<GetSiteBanksResponse> {
@@ -10,7 +10,7 @@ export async function getSiteBanks(siteId: string): Promise<GetSiteBanksResponse
 
 	if (!response.ok) {
 		if (response.status == 401) {
-			redirect('/sign-in')
+			throw new UnauthorizedError();
 		}
 		const error = await response.json().catch(() => null);
 		throw new Error( error?.message ?? 'Failed to fetch banks' );
@@ -38,7 +38,7 @@ export async function getBankReadings(
 
 	if (!response.ok) {
 		if (response.status == 401) {
-			redirect('/sign-in')
+			throw new UnauthorizedError();
 		}
 		const error = await response.json().catch(() => null);
 		throw new Error( error?.message ?? 'Failed to fetch readings' );

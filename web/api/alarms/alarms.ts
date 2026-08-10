@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
 import { apiFetch } from "../api-client";
+import { UnauthorizedError } from '../auth/auth.types';
 import type { GetActiveAlarmsResponse } from "./alarms.types";
 
 export async function getActiveAlarms(): Promise<GetActiveAlarmsResponse> {
@@ -10,7 +10,7 @@ export async function getActiveAlarms(): Promise<GetActiveAlarmsResponse> {
 
 	if (!response.ok) {
 		if (response.status == 401) {
-			redirect('/sign-in')
+			throw new UnauthorizedError();
 		}
 		const error = await response.json().catch(() => null);
 		throw new Error( error?.message ?? 'Failed to fetch alarms' );

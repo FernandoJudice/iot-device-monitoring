@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Loader2 } from "lucide-react";
 
+import { UnauthorizedError } from '@/api/auth/auth.types';
 import { getSiteBanks } from "@/api/banks/banks";
 import type { BankWithLatestReading } from "@/api/banks/banks.types";
 import { getActiveAlarms } from "@/api/alarms/alarms";
@@ -46,6 +47,10 @@ function SiteBanksContent() {
 					setAlarms(alarmsResponse.data);
 				}
 			} catch (error: unknown) {
+				if (error instanceof UnauthorizedError) {
+					router.replace('/sign-in');
+					return;
+				}
 				if (!cancelled) setFetchError(error instanceof Error ? error.message : "Failed to load banks");
 			} finally {
 				if (!cancelled) setIsLoading(false);
@@ -57,7 +62,7 @@ function SiteBanksContent() {
 		return () => {
 			cancelled = true;
 		};
-	}, [siteId]);
+	}, [siteId, router]);
 
 	const isLoadingResolved = siteId ? isLoading : false;
 	const errorMsg = siteId ? fetchError : "Nenhum site selecionado";
