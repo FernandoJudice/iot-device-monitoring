@@ -2,6 +2,8 @@ export type SeverityLevel = 'low' | 'medium' | 'high' | 'critical';
 
 export type AlarmEvent = {
 	bancoId: string,
+	siteId: string,
+    contratoId: string,
 	name: string;
 	timestamp: number;
 	severity: SeverityLevel;

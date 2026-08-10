@@ -2,6 +2,8 @@ import type { AlarmEvent, AlarmRule } from "./alarms.types.js";
 
 interface AlarmState {
 	bancoId: string;
+	siteId: string,
+    contratoId: string,
 	timestamp: Date;
 	alertas?: string[];
 }
@@ -38,6 +40,8 @@ export function applyAlarmRule<T extends AlarmState>(
 	if (isConditionMet && !isAlarmActive) {
 		result = {
 			bancoId: curState.bancoId,
+			siteId: curState.siteId,
+    		contratoId: curState.contratoId,
 			name: rule.name,
 			timestamp: curState.timestamp.getTime(),
 			severity: rule.severity,
@@ -46,6 +50,8 @@ export function applyAlarmRule<T extends AlarmState>(
 	} else if (!isConditionMet && isAlarmActive) {
 		result = {
 			bancoId: curState.bancoId,
+			siteId: curState.siteId,
+    		contratoId: curState.contratoId,
 			name: rule.name,
 			timestamp: curState.timestamp.getTime(),
 			severity: rule.severity,
