@@ -11,6 +11,7 @@ type BatteryBankMessage = {
 }
 
 type BatteryBankAlarms = {
+	contratoId: string
 	alertas?: string[]
 	ruleState?: Record<string, unknown>
 }

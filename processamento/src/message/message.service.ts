@@ -13,15 +13,29 @@ export async function saveMessageToDatabase(collectionName: string, message: any
 }
 
 export function saveMessageToRedis(id:string, message: any) {
-	redisClient.set(`${id}`, JSON.stringify(message)).catch((err) => console.log(err))
+	redisClient.set(`lastState:${id}`, JSON.stringify(message)).catch((err) => console.log(err))
 }
 
 export async function getMessageFromRedis<T>(id:string) {
-	const message = await redisClient.get(`${id}`);
+	const message = await redisClient.get(`lastState:${id}`);
 
 	if (message !== null) {
 		return JSON.parse(message) as T;
 	}
 
 	return null;
+}
+
+const LEITURA_STATE_PREFIX = 'lastState:leitura:';
+
+export async function getAllBancoIdsWithState(): Promise<string[]> {
+	const bancoIds: string[] = [];
+
+	for await (const keys of redisClient.scanIterator({ MATCH: `${LEITURA_STATE_PREFIX}*` })) {
+		for (const key of keys) {
+			bancoIds.push(key.slice(LEITURA_STATE_PREFIX.length));
+		}
+	}
+
+	return bancoIds;
 }

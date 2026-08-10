@@ -4,6 +4,7 @@ import { redisClient } from "./config/redis.js";
 import { createConsumer, listenMessage } from "./kafka/consumer.js";
 import { createProducer } from "./kafka/producer.js";
 import { processMessage } from "./message/message.controller.js";
+import { startChronAlarmsJob } from "./alarms/alarms.cron.js";
 
 await connectToDatabase();
 await redisClient.connect();
@@ -17,8 +18,10 @@ const consumer = await createConsumer(env.KAFKA_INGESTION_TOPIC).catch(async (er
     });
 const producer = await createProducer()
 
+startChronAlarmsJob(producer);
+
 await listenMessage(
-	consumer, 
+	consumer,
 	producer,
 	processMessage
 );

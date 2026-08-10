@@ -9,7 +9,6 @@ import {
   Field,
   FieldError,
   FieldGroup,
-  FieldLegend,
   FieldSet,
 } from '@/components/ui/field';
 
