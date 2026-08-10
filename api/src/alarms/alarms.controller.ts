@@ -1,17 +1,17 @@
 import type { AlarmEvent, AlarmQuery } from "./alarms.types.js";
-import { getBankAlarms, getBankArrayAlarms, resolveAlarmToRedis, saveAlarmToRedis } from "./alarms.service.js";
+import { getBankArrayAlarms, resolveAlarmToRedis, saveAlarmToRedis, setAcknowledgeAlarm } from "./alarms.service.js";
 import type { NextFunction, Request, Response } from 'express';
 import type { JwtData } from "../auth/auth.types.js";
-import { getBanksClient, getBanksOp } from "../banks/banks.service.js";
+import { getBank, getBanksClient, getBanksOp } from "../banks/banks.service.js";
 
 export async function processAlarm(alarm: AlarmEvent) {
-
+	alarm.id = encodeURIComponent(`${alarm.bancoId}:${alarm.name}`)
 	if (alarm.status === 'active') {
 		await saveAlarmToRedis(alarm)
-		// console.log(`Saved new active alarm:`, alarm)
+		console.log(`Saved new active alarm:`, alarm)
 	} else {
 		await resolveAlarmToRedis(alarm)
-		// console.log(`Resolved alarm:`, alarm)
+		console.log(`Resolved alarm:`, alarm)
 	}
 	
 }
@@ -49,6 +49,49 @@ export async function getAlarms(
 				message: 'Nothing here'
 			})
 		}
+	} catch (error: unknown) {
+		next(error);
+	}
+}
+
+
+export async function acknowledgeAlarm(
+	req: Request<{ id: string }>,
+	res: Response,
+	next: NextFunction,
+): Promise<void> {
+	try {
+		const [bancoId, alarmName] = req.params.id.split(":");
+		const user = res.locals.user as JwtData;
+
+		if (!bancoId || !alarmName) {
+			res.status(400).json({message: 'Invalid Query parameter'})
+			return
+		}
+
+		if (user.role === 'client') {
+						
+			const bank = await getBank(bancoId, user.contracts)
+
+			if (!bank) {
+				console.log('User does not have access to bank')
+				res.status(404)
+			}
+
+		}
+
+		const data = await setAcknowledgeAlarm(bancoId, alarmName, user.sub)
+
+		if (data) {
+			res.status(200).json({
+				data
+			})
+		} else {
+			res.status(404).json({
+				message: 'Alarm not found for this user'
+			})
+		}
+		
 	} catch (error: unknown) {
 		next(error);
 	}
