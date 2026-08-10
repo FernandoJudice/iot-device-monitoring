@@ -22,8 +22,6 @@ async function applyChronAlarmsToBanco(bancoId: string, producer: Producer) {
 
 	const alertEvents = applyAlarms(state, ChronAlarms, state);
 
-	// Rules may update ruleState (e.g. the offline rule's lastOnline counter)
-	// even when no alarm transition happened, so this must persist unconditionally.
 	const redisPromise = saveMessageToRedis(`leitura:${bancoId}`, state);
 
 	if (alertEvents.length === 0) {

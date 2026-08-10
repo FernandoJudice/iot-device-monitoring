@@ -79,7 +79,7 @@ Optou-se também por persistir os alertas em uma coleção própria, apesar de n
 
 Nem todos os alarmes possuem uma mensagem como gatilho. O estado de banco offline, por exemplo, é determinado pela ausência de novas mensagens. Por esse motivo, foi adicionada uma rotina periódica que verifica o último estado conhecido dos dispositivos. Essa rotina é executada separadamente do fluxo de consumo das mensagens.
 
-Um ponto percebido é que, para a tela de detalhamento, é exibido um gráfico com as leituras sobre o tempo do banco. Como escopo do projeto, apenas um evento de alarme atualiza essa tela conforme websocket. Uma possibilidade é atualizar a cada N leituras o gráfico da medida. Para isso, seria necessário que a API consumisse o tópico telemetria.leituras e periodicamente empurrasse o evento para o web.
+Um ponto percebido é que, para a tela de detalhamento, é exibido um gráfico com as leituras sobre o tempo do banco. Como escopo do projeto, apenas um evento de alarme atualiza essa tela conforme websocket. Uma possibilidade é atualizar a cada N leituras o gráfico da medida. Para isso, se fez necessário que a API consumisse o tópico telemetria.leituras e periodicamente empurrasse o evento para o web.
 
 ## API
 
