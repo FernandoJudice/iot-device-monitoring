@@ -18,7 +18,7 @@ export async function processMessage(message: BatteryBankState, producer: Produc
 	
 	const redisPromise = saveMessageToRedis(`leitura:${message.bancoId}`, message)
 	
-	console.log(`Processed message:`, message)
+	// console.log(`Processed message:`, message)
 	
 	let producerPromise
 	let alertDatabasePromise
@@ -26,7 +26,7 @@ export async function processMessage(message: BatteryBankState, producer: Produc
 	const databasePromise = saveMessageToDatabase("leituras", message)
 	
 	if (alertEvents.length > 0) {
-		console.log(`New Alarm Events:`, alertEvents)
+		// console.log(`New Alarm Events:`, alertEvents)
 		producerPromise = sendMessageArray(producer, env.KAFKA_ALARM_TOPIC, alertEvents)
 		alertDatabasePromise = alertEvents.map((event) => (saveMessageToDatabase("alertas", event)))
 	}

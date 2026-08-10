@@ -36,7 +36,7 @@ const readingsConsumer = await createConsumer(env.KAFKA_INGESTION_TOPIC, 'api-re
 
         await new Promise(resolve => setTimeout(resolve, 5000));
 
-        return createConsumer(env.KAFKA_INGESTION_TOPIC);
+        return createConsumer(env.KAFKA_INGESTION_TOPIC, 'api-readings-group');
     });;
 
 await listenMessage(

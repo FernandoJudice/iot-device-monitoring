@@ -6,7 +6,7 @@ export async function saveMessageToDatabase(collectionName: string, message: any
 		const db = getDb();
 		const collection = db.collection(collectionName);
 		await collection.insertOne(message);
-		console.log("Message saved to database:", message);
+		// console.log("Message saved to database:", message);
 	  } catch (error) {
 		console.error("Error saving message to database:", error);
 	  }
