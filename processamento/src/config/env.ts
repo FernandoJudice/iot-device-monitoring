@@ -47,6 +47,12 @@ if (!LOW_VOLTAGE_V || Number.isNaN(LOW_VOLTAGE_V)) {
   throw new Error('LOW_VOLTAGE_V environment variable is not defined');
 }
 
+const OFFLINE_TIME_MIN = Number(process.env.OFFLINE_TIME_MIN)
+
+if (!OFFLINE_TIME_MIN || Number.isNaN(OFFLINE_TIME_MIN)) {
+  throw new Error('LOW_VOLTAGE_V environment variable is not defined');
+}
+
 export const env = {
   KAFKA_BROKER,
   KAFKA_INGESTION_TOPIC,
@@ -55,5 +61,6 @@ export const env = {
   REDIS_URL,
   DISCHARGE_TIME_MIN,
   OVERTEMP_C,
-  LOW_VOLTAGE_V
+  LOW_VOLTAGE_V,
+  OFFLINE_TIME_MIN
 };

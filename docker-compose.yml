@@ -124,9 +124,10 @@ services:
       KAFKA_ALARM_TOPIC: "alertas.eventos"
       MONGODB_URI: "mongodb://mongo:27017/moura"
       REDIS_URL: "redis://redis:6379"
-      DISCHARGE_TIME_MIN: 1
-      OVERTEMP_C: 30
-      LOW_VOLTAGE_V: 50
+      DISCHARGE_TIME_MIN: 15
+      OVERTEMP_C: 45
+      LOW_VOLTAGE_V: 48
+      OFFLINE_TIME_MIN: 10
   
   api:
     build: ./api
