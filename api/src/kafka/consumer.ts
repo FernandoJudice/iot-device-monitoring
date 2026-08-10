@@ -10,7 +10,7 @@ export const kafkaClient = new Kafka({
 const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
 
 export async function createConsumer(topic: string) {
-	const consumer = kafkaClient.consumer({groupId: 'processor-group'});
+	const consumer = kafkaClient.consumer({groupId: 'api-group'});
 	try {
 		await consumer.connect();
 		await consumer.subscribe({ topic: topic });

@@ -9,6 +9,7 @@ import { redisClient } from "./config/redis.js";
 import { createConsumer, listenMessage } from './kafka/consumer.js';
 import { processAlarm } from './alarms/alarms.controller.js';
 import { sitesRouter } from './sites/sites.routes.js';
+import { alarmsRouter } from './alarms/alarms.routes.js';
 
 await connectToDatabase();
 await redisClient.connect();
@@ -29,6 +30,7 @@ app.use(cors());
 // Routes
 app.use('/api/v1/auth', authRouter);
 app.use('/sites', sitesRouter);
+app.use('/alertas', alarmsRouter);
 app.use(errorHandler);
 
 app.listen(env.PORT, (error) => {

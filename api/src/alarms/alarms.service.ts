@@ -1,5 +1,5 @@
 import { redisClient } from "../config/redis.js";
-import type { AlarmEvent } from "./alarm.types.js";
+import type { AlarmEvent } from "./alarms.types.js";
 
 export function saveAlarmToRedis(alarm: AlarmEvent) {
 	return redisClient.hSet(
@@ -13,11 +13,10 @@ export function resolveAlarmToRedis(alarm: AlarmEvent) {
 }
 
 export async function getBankAlarms(id: string) {
-
 	const alarms = await redisClient.hGetAll(`alerta:${id}`);
-
 	if (alarms) {
-		return Object.values(alarms).map(alarm => JSON.parse(alarm));
+		const result = Object.values(alarms).map(alarm => JSON.parse(alarm));
+		return result
 	}
 
 	return [];
@@ -25,7 +24,9 @@ export async function getBankAlarms(id: string) {
 
 export async function getBankArrayAlarms(ids: string[]) {
 
-	return await Promise.all([
+	const alarms = await Promise.all(
 		ids.map((id) => getBankAlarms(id))
-	])
+	)
+
+	return alarms.flat()
 }
