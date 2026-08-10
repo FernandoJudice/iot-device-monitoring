@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 // Routes
-app.use('/api/v1/auth', authRouter);
+app.use('/auth', authRouter);
 app.use('/sites', sitesRouter);
 app.use('/alertas', alarmsRouter);
 app.use('/bancos', banksRouter)

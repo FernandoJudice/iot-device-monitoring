@@ -20,7 +20,7 @@ export async function onSignIn(
 		console.log(user, `User Sign In`);
 
 		res.status(200).json({
-			token: 'Bearer ' + accessToken,
+			token: accessToken,
 		});
 	} catch (error: unknown) {
 		next(error);
