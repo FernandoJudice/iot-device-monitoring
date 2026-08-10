@@ -1,4 +1,4 @@
-export type BatteryBankMeasure = {
+export type BatteryBankReading = {
 	bancoId: string
 	siteId: string
 	timestamp: Date

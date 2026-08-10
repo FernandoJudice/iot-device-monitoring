@@ -19,3 +19,12 @@ export async function getBanksOp() {
 
 	return banks.map(bank => bank.bancoId);
 }
+
+export async function getBank(id: string, contracts: string[]) {
+	const db = getDb()
+	
+	const banks = await db.collection<BatteryBank>('bancos')
+		.findOne({ bancoId: id, contratoId: {$in: contracts} })
+	
+	return banks
+}

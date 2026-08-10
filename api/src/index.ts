@@ -10,6 +10,7 @@ import { createConsumer, listenMessage } from './kafka/consumer.js';
 import { processAlarm } from './alarms/alarms.controller.js';
 import { sitesRouter } from './sites/sites.routes.js';
 import { alarmsRouter } from './alarms/alarms.routes.js';
+import { banksRouter } from './banks/banks.routes.js';
 
 await connectToDatabase();
 await redisClient.connect();
@@ -31,6 +32,7 @@ app.use(cors());
 app.use('/api/v1/auth', authRouter);
 app.use('/sites', sitesRouter);
 app.use('/alertas', alarmsRouter);
+app.use('/bancos', banksRouter)
 app.use(errorHandler);
 
 app.listen(env.PORT, (error) => {
