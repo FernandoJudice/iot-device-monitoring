@@ -18,14 +18,26 @@ import { createWebSocketServer } from './ws/ws.server.js';
 await connectToDatabase();
 await redisClient.connect();
 
-const alarmsConsumer = await createConsumer(env.KAFKA_ALARM_TOPIC);
+const alarmsConsumer = await createConsumer(env.KAFKA_ALARM_TOPIC).catch(async (error) => {
+        console.error("Kafka connection failed. Retrying in 5s...", error);
+
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
+        return createConsumer(env.KAFKA_ALARM_TOPIC);
+    });
 
 await listenMessage(
 	alarmsConsumer,
 	processAlarm
 );
 
-const readingsConsumer = await createConsumer(env.KAFKA_INGESTION_TOPIC, 'api-readings-group');
+const readingsConsumer = await createConsumer(env.KAFKA_INGESTION_TOPIC, 'api-readings-group').catch(async (error) => {
+        console.error("Kafka connection failed. Retrying in 5s...", error);
+
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
+        return createConsumer(env.KAFKA_INGESTION_TOPIC);
+    });;
 
 await listenMessage(
 	readingsConsumer,
