@@ -3,6 +3,7 @@ import { getBankArrayAlarms, resolveAlarmToRedis, saveAlarmToRedis, setAcknowled
 import type { NextFunction, Request, Response } from 'express';
 import type { JwtData } from "../auth/auth.types.js";
 import { getBank, getBanksClient, getBanksOp } from "../banks/banks.service.js";
+import { broadcastToBanco } from "../ws/ws.server.js";
 
 export async function processAlarm(alarm: AlarmEvent) {
 	alarm.id = encodeURIComponent(`${alarm.bancoId}:${alarm.name}`)
@@ -13,7 +14,8 @@ export async function processAlarm(alarm: AlarmEvent) {
 		await resolveAlarmToRedis(alarm)
 		console.log(`Resolved alarm:`, alarm)
 	}
-	
+
+	broadcastToBanco(alarm.bancoId, { type: 'alarm', data: alarm })
 }
 
 

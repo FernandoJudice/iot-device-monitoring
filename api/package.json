@@ -19,6 +19,7 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.2.0",
+    "@types/ws": "^8.18.1",
     "tsx": "^4.23.11",
     "typescript": "^7.0.2"
   },
@@ -32,6 +33,7 @@
     "mongodb": "^7.5.0",
     "redis": "^6.2.0",
     "uuid": "^14.0.1",
+    "ws": "^8.21.3",
     "zod": "^4.4.3",
     "zod-validation-error": "^5.0.0"
   }

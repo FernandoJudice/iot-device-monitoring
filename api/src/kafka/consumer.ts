@@ -1,4 +1,4 @@
-import type { Consumer, Producer } from "kafkajs";
+import type { Consumer } from "kafkajs";
 import { Kafka } from 'kafkajs';
 import { env } from '../config/env.js';
 
@@ -9,8 +9,8 @@ export const kafkaClient = new Kafka({
 
 const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
 
-export async function createConsumer(topic: string) {
-	const consumer = kafkaClient.consumer({groupId: 'api-group'});
+export async function createConsumer(topic: string, groupId: string = 'api-group') {
+	const consumer = kafkaClient.consumer({groupId});
 	try {
 		await consumer.connect();
 		await consumer.subscribe({ topic: topic });

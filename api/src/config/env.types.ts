@@ -3,6 +3,7 @@ import {z} from 'zod'
 export const EnvSchema = z.object({
 	KAFKA_BROKER: z.string(),
 	KAFKA_ALARM_TOPIC: z.string(),
+	KAFKA_INGESTION_TOPIC: z.string(),
 	MONGODB_URI: z.string(),
 	REDIS_URL: z.string(),
 	// FRONTEND_URL: z.string(),
