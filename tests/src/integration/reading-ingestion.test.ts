@@ -24,7 +24,7 @@ describe('a normal reading published on MQTT reaches GET /bancos/:id/leituras', 
 		await closeFixtures();
 	});
 
-	it('flows through ingestao -> kafka -> processamento -> mongo and is readable via the API', async () => {
+	it('flows through ingestion -> kafka -> processor -> mongo and is readable via the API', async () => {
 		const reading = {
 			bancoId,
 			siteId,

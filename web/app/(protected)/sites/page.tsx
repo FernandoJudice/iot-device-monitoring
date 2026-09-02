@@ -15,9 +15,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 
 const modoLabels: Record<string, string> = {
-	flutuacao: "Flutuação",
-	descarga: "Descarga",
-	recarga: "Recarga",
+	flutuacao: "Float",
+	descarga: "Discharge",
+	recarga: "Recharge",
 };
 
 function SiteBanksContent() {
@@ -65,7 +65,7 @@ function SiteBanksContent() {
 	}, [siteId, router]);
 
 	const isLoadingResolved = siteId ? isLoading : false;
-	const errorMsg = siteId ? fetchError : "Nenhum site selecionado";
+	const errorMsg = siteId ? fetchError : "No site selected";
 
 	return (
 		<div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6">
@@ -74,7 +74,7 @@ function SiteBanksContent() {
 					<ArrowLeft className="size-4" />
 				</Button>
 				<div>
-					<h1 className="text-2xl font-semibold">Bancos de baterias</h1>
+					<h1 className="text-2xl font-semibold">Battery banks</h1>
 					<p className="text-sm text-muted-foreground">Site {siteId}</p>
 				</div>
 			</div>
@@ -82,14 +82,14 @@ function SiteBanksContent() {
 			{isLoadingResolved && (
 				<div className="flex items-center gap-2 text-sm text-muted-foreground">
 					<Loader2 className="size-4 animate-spin" />
-					Carregando bancos...
+					Loading banks...
 				</div>
 			)}
 
 			{errorMsg && !isLoadingResolved && <p className="text-sm text-destructive">{errorMsg}</p>}
 
 			{!isLoadingResolved && !errorMsg && banks.length === 0 && (
-				<p className="text-sm text-muted-foreground">Nenhum banco encontrado para este site</p>
+				<p className="text-sm text-muted-foreground">No banks found for this site</p>
 			)}
 
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -108,12 +108,12 @@ function SiteBanksContent() {
 								<CardDescription>
 									{latest
 										? `${latest.tensaoV.toFixed(2)} V · ${latest.correnteA.toFixed(2)} A · ${latest.temperaturaC.toFixed(1)}°C · ${modoLabels[latest.modo] ?? latest.modo}`
-										: "Sem leitura recente"}
+										: "No recent reading"}
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="flex flex-col gap-2">
 								<Separator />
-								<AlarmList alarms={bankAlarms} limit={3} emptyMessage="Sem alarmes ativos" />
+								<AlarmList alarms={bankAlarms} limit={3} emptyMessage="No active alarms" />
 							</CardContent>
 						</Card>
 					);
@@ -129,7 +129,7 @@ export default function SitesPage() {
 			fallback={
 				<div className="flex items-center gap-2 p-6 text-sm text-muted-foreground">
 					<Loader2 className="size-4 animate-spin" />
-					Carregando...
+					Loading...
 				</div>
 			}
 		>

@@ -28,7 +28,7 @@ describe('an overheating reading published on MQTT surfaces as an active alarm o
 		await closeFixtures();
 	});
 
-	it('flows through ingestao -> kafka -> processamento (alarm rule) -> redis and is readable via the API', async () => {
+	it('flows through ingestion -> kafka -> processor (alarm rule) -> redis and is readable via the API', async () => {
 		expect(100).toBeGreaterThan(OVERTEMP_C);
 
 		const reading = {

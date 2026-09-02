@@ -46,20 +46,20 @@ export default function DashboardPage() {
 		<div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-6">
 			<div>
 				<h1 className="text-2xl font-semibold">Sites</h1>
-				<p className="text-sm text-muted-foreground">Selecione um site para ver os bancos de baterias</p>
+				<p className="text-sm text-muted-foreground">Select a site to see its battery banks</p>
 			</div>
 
 			{isLoading && (
 				<div className="flex items-center gap-2 text-sm text-muted-foreground">
 					<Loader2 className="size-4 animate-spin" />
-					Carregando sites...
+					Loading sites...
 				</div>
 			)}
 
 			{errorMsg && !isLoading && <p className="text-sm text-destructive">{errorMsg}</p>}
 
 			{!isLoading && !errorMsg && sites.length === 0 && (
-				<p className="text-sm text-muted-foreground">Nenhum site encontrado</p>
+				<p className="text-sm text-muted-foreground">No sites found</p>
 			)}
 
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -80,7 +80,7 @@ export default function DashboardPage() {
 										"flex items-center gap-1 text-sm font-medium",
 										site.activeAlarmsCount > 0 ? "text-destructive" : "text-muted-foreground"
 									)}
-									title={`${site.activeAlarmsCount} alarme(s) ativo(s)`}
+									title={`${site.activeAlarmsCount} active alarm(s)`}
 								>
 									<AlertTriangle className="size-4" />
 									{site.activeAlarmsCount}

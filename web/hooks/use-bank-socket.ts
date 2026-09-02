@@ -16,7 +16,7 @@ type BankSocketHandlers = {
 };
 
 /**
- * Subscribes to live updates (alarms and readings) for a single banco over
+ * Subscribes to live updates (alarms and readings) for a single bank over
  * a WebSocket connection to the api (`GET /ws/bancos/:bancoId`).
  */
 export function useBankSocket(bancoId: string | null, handlers: BankSocketHandlers) {

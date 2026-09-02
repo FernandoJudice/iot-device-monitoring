@@ -70,7 +70,7 @@ export default function SignInPage() {
 		<CardHeader>
 			<CardTitle>Log In</CardTitle>
 			<CardDescription>
-				Entre seu e-mail e senha para acessar o site
+				Enter your email and password to access the site
 			</CardDescription>
 		</CardHeader>
 		<CardContent>

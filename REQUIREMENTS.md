@@ -91,7 +91,7 @@ Three things that will save you confusion:
 
 ## Adding your application
 
-Create your folders at the root (`ingestao/`, `processamento/`, `api/`, `web/`) and add the services to `docker-compose.yml`, using the internal names from the table above.
+Create your folders at the root (`ingestion/`, `processor/`, `api/`, `web/`) and add the services to `docker-compose.yml`, using the internal names from the table above.
 
 Two compose details that tend to bite:
 

@@ -35,11 +35,11 @@ function BankDetailsContent() {
 
 		async function loadDetails() {
 			try {
-				const ate = new Date();
-				const de = new Date(ate.getTime() - TWENTY_FOUR_HOURS_MS);
+				const to = new Date();
+				const from = new Date(to.getTime() - TWENTY_FOUR_HOURS_MS);
 
 				const [readingsResponse, alarmsResponse] = await Promise.all([
-					getBankReadings(bancoId as string, de, ate, 1),
+					getBankReadings(bancoId as string, from, to, 1),
 					getActiveAlarms(),
 				]);
 
@@ -66,7 +66,7 @@ function BankDetailsContent() {
 	}, [bancoId, router]);
 
 	const isLoadingResolved = bancoId ? isLoading : false;
-	const errorMsg = bancoId ? fetchError : "Nenhum banco selecionado";
+	const errorMsg = bancoId ? fetchError : "No bank selected";
 
 	const { isConnected } = useBankSocket(bancoId, {
 		onAlarm: (alarm) => {
@@ -91,8 +91,8 @@ function BankDetailsContent() {
 				</Button>
 				<div className="flex flex-1 items-center justify-between gap-3">
 					<div>
-						<h1 className="text-2xl font-semibold">Banco {bancoId}</h1>
-						<p className="text-sm text-muted-foreground">Tensão nas últimas 24 horas</p>
+						<h1 className="text-2xl font-semibold">Bank {bancoId}</h1>
+						<p className="text-sm text-muted-foreground">Voltage over the last 24 hours</p>
 					</div>
 					{!isLoadingResolved && !errorMsg && (
 						<div
@@ -100,10 +100,10 @@ function BankDetailsContent() {
 								"flex items-center gap-1.5 text-xs font-medium",
 								isConnected ? "text-chart-1" : "text-muted-foreground"
 							)}
-							title={isConnected ? "Recebendo atualizações em tempo real" : "Desconectado"}
+							title={isConnected ? "Receiving real-time updates" : "Disconnected"}
 						>
 							<span className={cn("size-2 rounded-full", isConnected ? "bg-chart-1" : "bg-muted-foreground")} />
-							{isConnected ? "Ao vivo" : "Desconectado"}
+							{isConnected ? "Live" : "Disconnected"}
 						</div>
 					)}
 				</div>
@@ -112,7 +112,7 @@ function BankDetailsContent() {
 			{isLoadingResolved && (
 				<div className="flex items-center gap-2 text-sm text-muted-foreground">
 					<Loader2 className="size-4 animate-spin" />
-					Carregando dados...
+					Loading data...
 				</div>
 			)}
 
@@ -122,8 +122,8 @@ function BankDetailsContent() {
 				<>
 					<Card>
 						<CardHeader>
-							<CardTitle>Tensão (V)</CardTitle>
-							<CardDescription>Últimas 24 horas</CardDescription>
+							<CardTitle>Voltage (V)</CardTitle>
+							<CardDescription>Last 24 hours</CardDescription>
 						</CardHeader>
 						<CardContent>
 							<VoltageChart data={readings} />
@@ -132,8 +132,8 @@ function BankDetailsContent() {
 
 					<Card>
 						<CardHeader>
-							<CardTitle>Alarmes</CardTitle>
-							<CardDescription>Alarmes ativos para este banco</CardDescription>
+							<CardTitle>Alarms</CardTitle>
+							<CardDescription>Active alarms for this bank</CardDescription>
 						</CardHeader>
 						<CardContent>
 							<AlarmList alarms={alarms} />
@@ -151,7 +151,7 @@ export default function DetailsPage() {
 			fallback={
 				<div className="flex items-center gap-2 p-6 text-sm text-muted-foreground">
 					<Loader2 className="size-4 animate-spin" />
-					Carregando...
+					Loading...
 				</div>
 			}
 		>

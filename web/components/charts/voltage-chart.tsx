@@ -14,7 +14,7 @@ const PLOT_HEIGHT = HEIGHT - PADDING.top - PADDING.bottom;
 type Point = { x: number; y: number; timestamp: number; tensaoV: number };
 
 function formatTime(timestamp: number) {
-	return new Date(timestamp).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+	return new Date(timestamp).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 }
 
 export function VoltageChart({ data }: { data: BankReading[] }) {
@@ -69,7 +69,7 @@ export function VoltageChart({ data }: { data: BankReading[] }) {
 	if (points.length === 0) {
 		return (
 			<div className="flex h-[260px] items-center justify-center text-sm text-muted-foreground">
-				Nenhuma leitura no período
+				No readings in this period
 			</div>
 		);
 	}
@@ -101,7 +101,7 @@ export function VoltageChart({ data }: { data: BankReading[] }) {
 				viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
 				className="h-[260px] w-full overflow-visible"
 				role="img"
-				aria-label="Tensão ao longo do tempo"
+				aria-label="Voltage over time"
 			>
 				<g transform={`translate(${PADDING.left},${PADDING.top})`}>
 					{yTicks.map((tick, i) => (

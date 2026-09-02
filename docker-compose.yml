@@ -90,9 +90,9 @@ services:
       SEMENTE: "42"
     restart: unless-stopped
   
-  ingestao:
-    build: ./ingestao
-    container_name: ingestao
+  ingestion:
+    build: ./ingestion
+    container_name: ingestion
     depends_on:
       kafka:
         condition: service_healthy
@@ -106,9 +106,9 @@ services:
       KAFKA_BROKER: "kafka:29092"
       INGESTION_TOPIC: "telemetria.leituras"
   
-  processamento:
-    build: ./processamento
-    container_name: processamento
+  processor:
+    build: ./processor
+    container_name: processor
     depends_on:
       kafka:
         condition: service_healthy
@@ -155,13 +155,16 @@ services:
       ACCESS_TOKEN_DURATION_UNIT: 'm'
   
   web:
-    build: ./web
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_API_URL: 'http://172.31.234.151:3000'
     container_name: web
     ports:
       - "3001:3000"
     environment:
-      API_URL: 'http://api:3000'
-      NEXT_PUBLIC_API_URL: 'http://api:3000'
+      API_URL: 'http://172.31.234.151:3000'
+      NEXT_PUBLIC_API_URL: 'http://172.31.234.151:3000'
 
 volumes:
   mongo-data:

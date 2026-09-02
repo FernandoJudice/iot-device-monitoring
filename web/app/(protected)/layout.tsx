@@ -20,7 +20,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 		return (
 			<div className="flex flex-1 items-center justify-center gap-2 p-6 text-sm text-muted-foreground">
 				<Loader2 className="size-4 animate-spin" />
-				Redirecionando...
+				Redirecting...
 			</div>
 		);
 	}

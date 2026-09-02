@@ -4,15 +4,15 @@ import { cn } from "@/lib/utils";
 import type { AlarmEvent, SeverityLevel } from "@/api/alarms/alarms.types";
 
 const severityConfig: Record<SeverityLevel, { icon: string; badge: string; label: string }> = {
-	low: { icon: "text-chart-1", badge: "bg-chart-1/10 text-chart-1", label: "Baixa" },
-	medium: { icon: "text-chart-2", badge: "bg-chart-2/10 text-chart-2", label: "Média" },
-	high: { icon: "text-chart-4", badge: "bg-chart-4/10 text-chart-4", label: "Alta" },
-	critical: { icon: "text-destructive", badge: "bg-destructive/10 text-destructive", label: "Crítica" },
+	low: { icon: "text-chart-1", badge: "bg-chart-1/10 text-chart-1", label: "Low" },
+	medium: { icon: "text-chart-2", badge: "bg-chart-2/10 text-chart-2", label: "Medium" },
+	high: { icon: "text-chart-4", badge: "bg-chart-4/10 text-chart-4", label: "High" },
+	critical: { icon: "text-destructive", badge: "bg-destructive/10 text-destructive", label: "Critical" },
 };
 
 export function AlarmList({
 	alarms,
-	emptyMessage = "Nenhum alarme ativo",
+	emptyMessage = "No active alarms",
 	limit,
 }: {
 	alarms: AlarmEvent[];
@@ -46,7 +46,7 @@ export function AlarmList({
 									{config.label}
 								</span>
 								<span className="text-xs text-muted-foreground">
-									{new Date(alarm.timestamp).toLocaleString("pt-BR")}
+									{new Date(alarm.timestamp).toLocaleString("en-US")}
 								</span>
 							</div>
 						</li>
@@ -55,7 +55,7 @@ export function AlarmList({
 			</ul>
 
 			{hiddenCount > 0 && (
-				<p className="text-xs text-muted-foreground">+{hiddenCount} mais</p>
+				<p className="text-xs text-muted-foreground">+{hiddenCount} more</p>
 			)}
 		</div>
 	);
